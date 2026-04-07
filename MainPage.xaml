@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ScottPlot="clr-namespace:ScottPlot.Maui;assembly=ScottPlot.Maui"
+             x:Class="FisheryMAUI.MainPage"
+             BackgroundColor="#F3F6F2">
+
+    <ContentPage.Resources>
+        <Style x:Key="SectionTitleStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="TextColor" Value="#183C35" />
+        </Style>
+
+        <Style x:Key="SectionSubtitleStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSansRegular" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="#5F746D" />
+        </Style>
+
+        <Style x:Key="FieldLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="#355049" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="MainContent"
+                             Padding="22,20,22,28"
+                             Spacing="18"
+                             HorizontalOptions="Center">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Fisheries Oceanology Base: Lab 4"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="28"
+                       TextColor="#183C35" />
+
+                <Label Text="Модель нереста, инкубации и температурных сценариев."
+                       FontFamily="OpenSansRegular"
+                       FontSize="14"
+                       TextColor="#5F746D" />
+
+                <HorizontalStackLayout Spacing="10">
+                    <Border Padding="12,7"
+                            Background="#E9F3EF"
+                            Stroke="#D7E5DE"
+                            StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <Label x:Name="HeroSpeciesLabel"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="13"
+                               TextColor="#214039" />
+                    </Border>
+
+                    <Border Padding="12,7"
+                            Background="#F3F6F2"
+                            Stroke="#D7E5DE"
+                            StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <Label x:Name="HeroSummaryLabel"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="13"
+                               TextColor="#214039" />
+                    </Border>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <Grid x:Name="TopCardsGrid"
+                  ColumnSpacing="18"
+                  RowSpacing="18">
+                <Border x:Name="ParametersCard"
+                        Padding="18"
+                        Background="White"
+                        Stroke="#D9E5DF"
+                        StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="24" />
+                    </Border.StrokeShape>
+
+                    <VerticalStackLayout Spacing="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Параметры модели" Style="{StaticResource SectionTitleStyle}" />
+                            <Label Text="Выберите вид, задайте порог нереста и настройте климатическую аномалию."
+                                   Style="{StaticResource SectionSubtitleStyle}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Вид рыбы" Style="{StaticResource FieldLabelStyle}" />
+                            <Grid x:Name="FishButtonsGrid"
+                                  ColumnDefinitions="*,*,*"
+                                  ColumnSpacing="10" />
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="12"
+                              RowDefinitions="Auto,Auto,Auto"
+                              RowSpacing="12">
+                            <VerticalStackLayout Grid.Row="0"
+                                                 Grid.Column="0"
+                                                 Spacing="6">
+                                <Label Text="Порог нереста, °C" Style="{StaticResource FieldLabelStyle}" />
+                                <Entry x:Name="SpawningTemperatureEntry"
+                                       Keyboard="Numeric"
+                                       FontSize="14"
+                                       BackgroundColor="#F7FAF7"
+                                       TextColor="#214039" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Row="0"
+                                                 Grid.Column="1"
+                                                 Spacing="6">
+                                <Label Text="Аномалия года, °C" Style="{StaticResource FieldLabelStyle}" />
+                                <Entry x:Name="AnomalyEntry"
+                                       Keyboard="Numeric"
+                                       FontSize="14"
+                                       BackgroundColor="#F7FAF7"
+                                       TextColor="#214039" />
+                            </VerticalStackLayout>
+
+                            <Grid Grid.Row="1"
+                                  Grid.ColumnSpan="2"
+                                  ColumnDefinitions="*,*"
+                                  ColumnSpacing="10">
+                                <Button Grid.Column="0"
+                                        Text="Сбросить"
+                                        Clicked="OnResetDefaultsClicked"
+                                        BackgroundColor="#EAF2EE"
+                                        TextColor="#183C35"
+                                        CornerRadius="16" />
+
+                                <Button Grid.Column="1"
+                                        Text="Пересчитать"
+                                        Clicked="OnRecalculateClicked"
+                                        BackgroundColor="#0B5D5C"
+                                        TextColor="White"
+                                        CornerRadius="16" />
+                            </Grid>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border x:Name="TemperaturesCard"
+                        Padding="18"
+                        Background="#FBFCFA"
+                        Stroke="#D9E5DF"
+                        StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="24" />
+                    </Border.StrokeShape>
+
+                    <VerticalStackLayout Spacing="14">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Температуры по месяцам" Style="{StaticResource SectionTitleStyle}" />
+                            <Label Text="Компактный ввод профиля воды. Значения можно менять прямо в таблице."
+                                   Style="{StaticResource SectionSubtitleStyle}" />
+                        </VerticalStackLayout>
+
+                        <Grid x:Name="MonthlyInputsGrid"
+                              ColumnSpacing="8"
+                              RowSpacing="8" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Border Padding="18"
+                    Background="White"
+                    Stroke="#D9E5DF"
+                    StrokeThickness="1">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="24" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Сценарии" Style="{StaticResource SectionTitleStyle}" />
+                        <Label Text="Краткие итоги по среднему, теплому и холодному году."
+                               Style="{StaticResource SectionSubtitleStyle}" />
+                    </VerticalStackLayout>
+
+                    <Grid x:Name="ScenarioCardsGrid"
+                          ColumnSpacing="12"
+                          RowSpacing="12" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Padding="18"
+                    Background="White"
+                    Stroke="#D9E5DF"
+                    StrokeThickness="1">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="24" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="4">
+                        <Label x:Name="GraphTitleLabel" Style="{StaticResource SectionTitleStyle}" />
+                        <Label x:Name="GraphDescriptionLabel" Style="{StaticResource SectionSubtitleStyle}" />
+                    </VerticalStackLayout>
+
+                    <ScrollView Orientation="Horizontal"
+                                HorizontalScrollBarVisibility="Never">
+                        <HorizontalStackLayout x:Name="GraphButtonsContainer" Spacing="10" />
+                    </ScrollView>
+
+                    <Border Padding="12"
+                            Background="#F7FAF7"
+                            Stroke="#DDE9E1"
+                            StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+
+                        <ScottPlot:MauiPlot x:Name="MainPlot"
+                                            InputTransparent="True"
+                                            HeightRequest="600" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
